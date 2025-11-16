@@ -8,35 +8,32 @@ function TabbedStreams() {
 
   return (
     <div className="tabbed-streams-container" enable-xr>
-      <div className="tabs-header" enable-xr>
-        <div className="platform-header">
-          <span className="tab-icon">𝕏</span>
-          <span className="tab-name">Twitter</span>
-        </div>
-        <div className="platform-header">
-          <span className="tab-icon">📷</span>
-          <span className="tab-name">Instagram</span>
-        </div>
-        <div className="platform-header">
-          <span className="tab-icon">🎵</span>
-          <span className="tab-name">TikTok</span>
-        </div>
-      </div>
-
       <div className="panels-container">
         <div className="stream-panel" enable-xr>
+          <div className="panel-header" enable-xr>
+            <span className="tab-icon">𝕏</span>
+            <span className="tab-name">Twitter</span>
+          </div>
           <StreamSection 
             platform="twitter" 
             gradient={twitterGradient} 
           />
         </div>
         <div className="stream-panel" enable-xr>
+          <div className="panel-header" enable-xr>
+            <span className="tab-icon">📷</span>
+            <span className="tab-name">Instagram</span>
+          </div>
           <StreamSection 
             platform="instagram" 
             gradient={instagramGradient} 
           />
         </div>
         <div className="stream-panel" enable-xr>
+          <div className="panel-header" enable-xr>
+            <span className="tab-icon">🎵</span>
+            <span className="tab-name">TikTok</span>
+          </div>
           <StreamSection 
             platform="tiktok" 
             gradient={tiktokGradient} 

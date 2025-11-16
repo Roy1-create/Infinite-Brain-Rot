@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./VideoPost.css";
 
 interface VideoPostProps {
@@ -45,7 +45,22 @@ function VideoPost({
     console.error('Video failed to load:', videoSrc);
   };
 
-
+  // Auto-play video when component mounts if autoplay is enabled
+  useEffect(() => {
+    if (autoplay && videoRef.current) {
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch((error) => {
+            // Autoplay was prevented, which is expected in some browsers
+            console.log('Autoplay prevented:', error);
+          });
+      }
+    }
+  }, [autoplay]);
 
   return (
     <div className="video-post-container" enable-xr>
@@ -65,6 +80,7 @@ function VideoPost({
           muted={muted}
           controls={controls}
           playsInline
+          autoPlay={autoplay}
           onLoadedData={handleVideoLoad}
           onError={handleVideoError}
           onPlay={() => setIsPlaying(true)}

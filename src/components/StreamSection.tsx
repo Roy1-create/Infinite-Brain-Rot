@@ -15,6 +15,20 @@ function StreamSection({ platform, gradient }: StreamSectionProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const scrollPositionRef = useRef(0);
 
+  // Helper function to prepend __XR_ENV_BASE__ to video paths when in AVP mode
+  const getVideoPath = (path: string): string => {
+    // Check if we're in AVP mode by checking if __XR_ENV_BASE__ exists and is not empty
+    // @ts-ignore - __XR_ENV_BASE__ is a global variable defined at build time
+    const base = typeof __XR_ENV_BASE__ !== 'undefined' ? __XR_ENV_BASE__ : '';
+    const isAVP = base !== '';
+    if (isAVP && path.startsWith('/')) {
+      // Remove trailing slash from base if present, and ensure path starts with /
+      const cleanBase = base.replace(/\/$/, '');
+      return cleanBase + path;
+    }
+    return path;
+  };
+
   const generateMockPosts = (platform: string): SocialMediaPost[] => {
     if (platform === "twitter") {
       return [
@@ -28,6 +42,7 @@ function StreamSection({ platform, gradient }: StreamSectionProps) {
           likes: 124,
           comments: 23,
           shares: 45,
+          video: getVideoPath("/videos/techen.mp4"), // Tech/coding video
         },
         {
           id: "2",
@@ -39,6 +54,7 @@ function StreamSection({ platform, gradient }: StreamSectionProps) {
           likes: 89,
           comments: 12,
           shares: 18,
+          video: getVideoPath("/videos/design.mp4"), // Design/creative video
         },
         {
           id: "3",
@@ -50,8 +66,7 @@ function StreamSection({ platform, gradient }: StreamSectionProps) {
           likes: 256,
           comments: 34,
           shares: 67,
-          video: "/videos/twitter-demo-1.mp4",
-          videoPoster: "/videos/twitter-demo-1-poster.jpg",
+          video: getVideoPath("/videos/codewizard.mp4"), // Coding project video
         },
       ];
     } else if (platform === "instagram") {
@@ -65,7 +80,7 @@ function StreamSection({ platform, gradient }: StreamSectionProps) {
           timestamp: "1h",
           likes: 1234,
           comments: 89,
-          image: "🌄",
+          video: getVideoPath("/videos/Travel.mp4"), // Travel/sunset video
         },
         {
           id: "2",
@@ -76,8 +91,7 @@ function StreamSection({ platform, gradient }: StreamSectionProps) {
           timestamp: "3h",
           likes: 892,
           comments: 45,
-          video: "/videos/instagram-demo-1.mp4",
-          videoPoster: "/videos/instagram-demo-1-poster.jpg",
+          video: getVideoPath("/videos/foody.mp4"), // Cooking video
         },
         {
           id: "3",
@@ -88,7 +102,7 @@ function StreamSection({ platform, gradient }: StreamSectionProps) {
           timestamp: "5h",
           likes: 567,
           comments: 23,
-          image: "🏋️",
+          video: getVideoPath("/videos/gym.mp4"), // Fitness/workout video
         },
       ];
     } else if (platform === "tiktok") {
@@ -103,8 +117,7 @@ function StreamSection({ platform, gradient }: StreamSectionProps) {
           likes: 5432,
           comments: 234,
           shares: 567,
-          video: "/videos/tiktok-demo-1.mp4",
-          videoPoster: "/videos/tiktok-demo-1-poster.jpg",
+          video: getVideoPath("/videos/dance.mp4"), // Dance video
         },
         {
           id: "2",
@@ -116,8 +129,7 @@ function StreamSection({ platform, gradient }: StreamSectionProps) {
           likes: 8921,
           comments: 456,
           shares: 1234,
-          video: "/videos/tiktok-demo-2.mp4",
-          videoPoster: "/videos/tiktok-demo-2-poster.jpg",
+          video: getVideoPath("/videos/cook.mp4"), // Cooking tutorial video
         },
         {
           id: "3",
@@ -129,8 +141,7 @@ function StreamSection({ platform, gradient }: StreamSectionProps) {
           likes: 12345,
           comments: 789,
           shares: 2345,
-          video: "/videos/tiktok-demo-3.mp4",
-          videoPoster: "/videos/tiktok-demo-3-poster.jpg",
+          video: getVideoPath("/videos/comedy.mp4"), // Comedy/funny video
         },
         {
           id: "4",
@@ -142,6 +153,7 @@ function StreamSection({ platform, gradient }: StreamSectionProps) {
           likes: 6789,
           comments: 345,
           shares: 890,
+          video: getVideoPath("/videos/techreview.mp4"), // Tech review video
         },
       ];
     } else {
@@ -346,7 +358,7 @@ function StreamSection({ platform, gradient }: StreamSectionProps) {
                     <VideoPost
                       videoSrc={post.video}
                       poster={post.videoPoster}
-                      autoplay={false}
+                      autoplay={true}
                       loop={true}
                       muted={true}
                       controls={true}
