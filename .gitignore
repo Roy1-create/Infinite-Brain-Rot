@@ -26,5 +26,6 @@ dist-ssr
 .pnpm-store/
 .pnpm-state.json
 .pnpmfile.cjs
+package-lock.json
 
 **/temp/**
