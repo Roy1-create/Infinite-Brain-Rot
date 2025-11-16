@@ -45,17 +45,7 @@ function VideoPost({
     console.error('Video failed to load:', videoSrc);
   };
 
-  if (hasError) {
-    return (
-      <div className="video-post-container video-error" enable-xr>
-        <div className="video-error-message">
-          <div className="video-error-icon">🎬</div>
-          <p>Video not available</p>
-          <small>Add video file to: {videoSrc}</small>
-        </div>
-      </div>
-    );
-  }
+
 
   return (
     <div className="video-post-container" enable-xr>

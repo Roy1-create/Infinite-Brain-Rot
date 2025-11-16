@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react
 import SecondPage from "./SecondPage";
 import LoginPage from "./LoginPage";
 import StreamPage from "./StreamPage";
+import NewPage from "./NewPage";
+import DynamicPage from "./pages/DynamicPage";
 import TabbedStreams from "./components/TabbedStreams";
 import { initScene } from "@webspatial/react-sdk";
 
@@ -19,6 +21,8 @@ function App() {
     <Router basename={__XR_ENV_BASE__}>
       <Routes>
         <Route path="/second-page" element={<SecondPage />} />
+        <Route path="/new-page" element={<NewPage />} />
+        <Route path="/dynamic-page" element={<DynamicPage />} />
         <Route path="/login/:platform" element={<LoginPage />} />
         <Route path="/stream/:platform" element={<StreamPage />} />
         <Route path="/" element={<LandingPage />} />

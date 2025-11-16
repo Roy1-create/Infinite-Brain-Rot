@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 import "./App.css";
 import { SocialMediaPost } from "./services/socialMediaAPI";
 import VideoPost from "./components/VideoPost";
 
 function StreamPage() {
   const { platform } = useParams<{ platform: string }>();
-  const navigate = useNavigate();
   const [posts, setPosts] = useState<SocialMediaPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const scrollPositionRef = useRef(0);
 
   const platformConfig = {
     twitter: {
@@ -44,6 +45,115 @@ function StreamPage() {
       setIsLoading(false);
     }, 500);
   }, [platform]);
+
+  // Auto-scroll functionality (AVP compatible)
+  useEffect(() => {
+    if (isLoading || !scrollContainerRef.current || posts.length === 0) {
+      return;
+    }
+
+    const container = scrollContainerRef.current;
+    const scrollSpeed = 0.5; // pixels per frame
+    let intervalId: number | null = null;
+    let isPaused = false;
+
+    // Check if container is scrollable
+    const isScrollable = () => {
+      if (!container) return false;
+      return container.scrollHeight > container.clientHeight;
+    };
+
+    // Use setInterval for AVP - more reliable than requestAnimationFrame
+    const autoScroll = () => {
+      if (isPaused || !container) {
+        return;
+      }
+
+      // Re-check scrollability
+      if (!isScrollable()) {
+        return;
+      }
+
+      scrollPositionRef.current += scrollSpeed;
+      container.scrollTop = scrollPositionRef.current;
+
+      const maxScroll = container.scrollHeight - container.clientHeight;
+      
+      if (scrollPositionRef.current >= maxScroll - 1) {
+        scrollPositionRef.current = 0;
+        container.scrollTop = 0;
+      }
+    };
+
+    // Pause on hover/interaction
+    const handleMouseEnter = () => {
+      isPaused = true;
+    };
+
+    const handleMouseLeave = () => {
+      isPaused = false;
+      if (container) {
+        scrollPositionRef.current = container.scrollTop;
+      }
+    };
+
+    // Also pause on touch/interaction for AVP
+    const handleTouchStart = () => {
+      isPaused = true;
+    };
+
+    const handleTouchEnd = () => {
+      isPaused = false;
+      if (container) {
+        scrollPositionRef.current = container.scrollTop;
+      }
+    };
+
+    // Sync scroll position on user scroll
+    const handleScroll = () => {
+      if (container) {
+        scrollPositionRef.current = container.scrollTop;
+      }
+    };
+
+    container.addEventListener('mouseenter', handleMouseEnter);
+    container.addEventListener('mouseleave', handleMouseLeave);
+    container.addEventListener('touchstart', handleTouchStart);
+    container.addEventListener('touchend', handleTouchEnd);
+    container.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Wait for container to be ready and content to render
+    const startDelay = setTimeout(() => {
+      if (!container) {
+        return;
+      }
+
+      // Force layout recalculation
+      void container.offsetHeight;
+
+      if (!isScrollable()) {
+        console.warn('Container not scrollable - scrollHeight:', container.scrollHeight, 'clientHeight:', container.clientHeight);
+        return;
+      }
+
+      scrollPositionRef.current = container.scrollTop;
+      
+      // Use setInterval for AVP compatibility
+      intervalId = window.setInterval(autoScroll, 16); // ~60fps
+    }, 2000); // Wait for content to render
+
+    return () => {
+      clearTimeout(startDelay);
+      if (intervalId !== null) {
+        clearInterval(intervalId);
+      }
+      container.removeEventListener('mouseenter', handleMouseEnter);
+      container.removeEventListener('mouseleave', handleMouseLeave);
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchend', handleTouchEnd);
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, [isLoading, posts.length]);
 
   const generateMockPosts = (platform: string): SocialMediaPost[] => {
     if (platform === "twitter") {
@@ -201,7 +311,7 @@ function StreamPage() {
         </div>
       </div>
 
-      <div className="stream-content">
+      <div className="stream-content" ref={scrollContainerRef}>
         {isLoading ? (
           <div className="loading-container">
             <div className="loading-spinner"></div>

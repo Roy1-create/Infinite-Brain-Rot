@@ -551,10 +551,12 @@ html.is-spatial {
 /* Stream Page Styles */
 .stream-container {
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-bottom: 2rem;
+  overflow: hidden;
+  position: relative;
 }
 
 .stream-header {
@@ -612,6 +614,21 @@ html.is-spatial {
   margin: 0 auto;
   padding: 2rem;
   box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100vh - 80px); /* Account for header */
+  max-height: calc(100vh - 80px);
+  min-height: 0; /* Important for flex children */
+  position: relative;
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scroll-behavior: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.stream-content::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .loading-container {
@@ -828,6 +845,22 @@ html.is-spatial {
     --xr-back: 30;
   }
 
+  .stream-container {
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+
+  .stream-content {
+    height: calc(100vh - 100px);
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Ensure scrolling works in AVP */
+    -webkit-overflow-scrolling: touch;
+    will-change: scroll-position;
+  }
+
   .post-card {
     --xr-background-material: thick;
     --xr-back: 40;
@@ -839,6 +872,125 @@ html.is-spatial {
   }
 
   .error-banner {
+    --xr-background-material: translucent;
+  }
+}
+
+/* New Page Styles */
+.new-page-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.new-page-content {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 3rem;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.new-page-content h1 {
+  margin: 0 0 1.5rem 0;
+  color: #333;
+  font-size: 2.5rem;
+}
+
+.new-page-message {
+  font-size: 1.2rem;
+  color: #666;
+  margin: 0 0 2rem 0;
+  min-height: 2rem;
+}
+
+.new-page-body {
+  margin: 2rem 0;
+  color: #333;
+}
+
+.new-page-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.new-page-button {
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, #646cff 0%, #535bf2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.new-page-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.4);
+}
+
+.new-page-button.secondary {
+  background: rgba(100, 108, 255, 0.1);
+  color: #646cff;
+  border: 2px solid #646cff;
+}
+
+.new-page-button.secondary:hover {
+  background: rgba(100, 108, 255, 0.2);
+}
+
+.new-page-button.create-page-button {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+  color: white;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.new-page-button.create-page-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.new-page-button.create-page-button:hover::before {
+  left: 100%;
+}
+
+.new-page-button.create-page-button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(240, 147, 251, 0.5);
+}
+
+/* XR Styles for New Page */
+html.is-spatial {
+  .new-page-container {
+    background: transparent;
+  }
+
+  .new-page-content {
+    --xr-background-material: thick;
+    --xr-back: 50;
+    backdrop-filter: blur(10px);
+  }
+
+  .new-page-button {
     --xr-background-material: translucent;
   }
 }
