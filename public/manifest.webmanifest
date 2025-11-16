@@ -1,9 +1,19 @@
 {
+  "name": "InfiniteBrainrot",
+  "short_name": "Brainrot",
   "start_url": "/",
-  "xr_main_scene": {
-    "default_size": {
-      "width": 2200,
-      "height": 1200
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+    "xr_main_scene": {
+      "default_size": {
+        "width": 2200,
+        "height": 1200
+      }
     }
   }
-}
