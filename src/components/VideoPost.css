@@ -1,0 +1,129 @@
+.video-post-container {
+  width: 100%;
+  margin-top: 1rem;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+  position: relative;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+  background: #000;
+}
+
+.video-post {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.video-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: white;
+  z-index: 1;
+}
+
+.loading-spinner-small {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.video-play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 2;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.video-play-button:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.video-post-container video::-webkit-media-controls {
+  display: flex;
+}
+
+.video-post-container video::-webkit-media-controls-panel {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Video Error Styles */
+.video-error {
+  background: #f5f5f5;
+  border: 2px dashed #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  padding: 2rem;
+}
+
+.video-error-message {
+  text-align: center;
+  color: #666;
+}
+
+.video-error-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.video-error-message p {
+  margin: 0.5rem 0;
+  font-weight: 600;
+  color: #333;
+}
+
+.video-error-message small {
+  color: #999;
+  font-size: 0.85rem;
+}
+
+/* XR Styles */
+html.is-spatial {
+  .video-post-container {
+    --xr-background-material: transparent;
+    --xr-back: 30;
+  }
+
+  .video-post {
+    --xr-background-material: transparent;
+  }
+
+  .video-error {
+    --xr-background-material: translucent;
+  }
+}
+

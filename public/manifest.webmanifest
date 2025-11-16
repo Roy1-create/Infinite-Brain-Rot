@@ -1,0 +1,9 @@
+{
+  "start_url": "/",
+  "xr_main_scene": {
+    "default_size": {
+      "width": 1800,
+      "height": 1200
+    }
+  }
+}
