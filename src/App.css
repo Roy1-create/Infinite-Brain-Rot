@@ -133,6 +133,15 @@
   box-sizing: border-box;
 }
 
+.panels-container[style*="grid"] {
+  display: grid;
+  gap: 1rem;
+  flex: 1;
+  overflow: hidden;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
 .stream-panel {
   flex: 1;
   display: flex;
@@ -403,9 +412,10 @@ html.is-spatial {
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: auto;
-  /* Hide scrollbar but keep functionality */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  /* Show scrollbar */
+  scrollbar-width: thin; /* Firefox - thin scrollbar */
+  scrollbar-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.1); /* Firefox - thumb and track colors */
+  -ms-overflow-style: auto; /* IE and Edge - show scrollbar */
   /* Optimize for smooth scrolling in VisionOS */
   -webkit-overflow-scrolling: touch;
   will-change: scroll-position;
@@ -413,7 +423,50 @@ html.is-spatial {
 }
 
 .stream-section-content::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: block; /* Chrome, Safari, Opera - show scrollbar */
+  width: 8px;
+}
+
+.stream-section-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.stream-section-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.stream-section-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* Ensure scrollbars are visible in NewsSection */
+.news-panel .stream-section-content {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.6) rgba(0, 0, 0, 0.2);
+  -ms-overflow-style: auto;
+}
+
+.news-panel .stream-section-content::-webkit-scrollbar {
+  display: block;
+  width: 8px;
+}
+
+.news-panel .stream-section-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.news-panel .stream-section-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.news-panel .stream-section-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .stream-section-loading {
